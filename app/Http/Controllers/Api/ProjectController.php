@@ -13,7 +13,7 @@ class ProjectController extends Controller
     public function index()
     {
 
-        $projects = Project::all();
+        $projects = Project::with('user', 'type', 'technologies')->paginate(20);
 
         return response()->json(
             [
@@ -31,20 +31,22 @@ class ProjectController extends Controller
         ]);
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $data = $request->all();
 
-        if ( isset($data['name'])){
-            $stringa = $data['name'];
-            $project = Project::where('title', 'LIKE', "%{$stringa}%")->get();
-
-
-            return response()->json([
-                "success" => true,
-                "results" => $project
-            ]);
+        if (isset($data['title'])) {
+            $stringa = $data['title'];
+            $projects = Project::where('title', 'LIKE', "%{$stringa}%")->get();
+        } elseif ( is_null($data['title'])) {
+            $projects = Project::all();
         } else {
             abort(404);
         }
+        return response()->json([
+            "success" => true,
+            "results" => $projects,
+            "matches" => count($projects)
+        ]);
     }
 }
