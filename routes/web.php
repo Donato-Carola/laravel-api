@@ -18,7 +18,7 @@ use App\Http\Controllers\Guest\HomePageController;
 */
 
 Route::get('/', [HomePageController::class, 'index'])->name('guest.index');
-
+Route::get('/projects/{project}', [HomePageController::class, 'show'])->name('guest.show');
 
 Auth::routes();
 
