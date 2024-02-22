@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\ProjectController as AdminProjectController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Guest\HomePageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,11 +17,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', [HomePageController::class, 'index'])->name('guest.index');
 
 
 Auth::routes();
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/autenticazione', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
 Route::middleware('auth')
